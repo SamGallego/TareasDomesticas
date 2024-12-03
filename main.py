@@ -14,7 +14,6 @@ tareas = [("Lavar platos", random.randint(1, 5)),
           ("Lavar ropa", random.randint(1, 5)),
           ("Cocinar", random.randint(1, 5))]
 
-#Locks
 lock = threading.Lock()
 
 def tarea_con_lock(nombre, tiempo):

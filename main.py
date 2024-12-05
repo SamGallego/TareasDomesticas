@@ -22,6 +22,7 @@ def tarea_con_lock(nombre, tiempo):
 
 print("\nEjemplo con Lock:")
 hilos_lock = []
+
 for tarea, tiempo in tareas:
     hilo = threading.Thread(target=tarea_con_lock, args=(tarea, tiempo))
     hilos_lock.append(hilo)

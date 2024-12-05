@@ -1,32 +1,33 @@
 import threading
 import time
 import random
+from threading import Lock
 
-# Función para simular una tarea
+global contador
+contador = 0
+
 def realizar_tarea(nombre, tiempo):
-    print(f"{nombre} ha comenzado.")
-    time.sleep(tiempo)
-    print(f"{nombre} ha terminado.")
 
-# Lista de tareas
-tareas = [("Lavar platos", random.randint(1, 5)),
-          ("Barrer", random.randint(1, 5)),
-          ("Lavar ropa", random.randint(1, 5)),
-          ("Cocinar", random.randint(1, 5))]
-
-lock = threading.Lock()
-
-def tarea_con_lock(nombre, tiempo):
     with lock:
-        realizar_tarea(nombre, tiempo)
+        contador += 1
+        print(f"{nombre} ha comenzado. Hay un total de {contador} procesos ahora mismo.")
+        time.sleep(tiempo)
+        print(f"{nombre} ha terminado. Hay un total de {contador} procesos ahora mismo.")
+        contador -= 1
 
-print("\nEjemplo con Lock:")
-hilos_lock = []
+tareas = [("Lavar platos", random.randint(1, 9)),
+          ("Barrer", random.randint(1, 9)),
+          ("Lavar ropa", random.randint(1, 9)),
+          ("Cocinar", random.randint(1, 9))]
+
+lock = Lock()
+hilos=[]
 
 for tarea, tiempo in tareas:
-    hilo = threading.Thread(target=tarea_con_lock, args=(tarea, tiempo))
-    hilos_lock.append(hilo)
+    hilo = threading.Thread(target= realizar_tarea, args=(tarea, tiempo))
     hilo.start()
+    hilos.append(hilo)
+    #hilo.join()
 
-for hilo in hilos_lock:
+for hilo in hilos:
     hilo.join()
